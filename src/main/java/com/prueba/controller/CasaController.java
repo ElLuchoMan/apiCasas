@@ -54,8 +54,8 @@ public class CasaController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Método que trae una casa por direccion")
-	public List<Casa> encontrarDireccion(@Param("direccion") String direccion) {
-	return casaService.encontrarDireccion(direccion);
+	public List<Casa> encontrarDireccion(@RequestParam("direccion") String direccion) {
+		return casaService.encontrarDireccion(direccion);
 	}
 
 	@PostMapping("/nueva")
