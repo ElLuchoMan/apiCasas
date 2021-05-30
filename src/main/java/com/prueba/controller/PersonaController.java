@@ -14,6 +14,8 @@ import com.prueba.entity.Persona;
 import com.prueba.service.CasaService;
 import com.prueba.service.PersonaService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/personas")
 @CrossOrigin(origins = "*")
@@ -21,16 +23,15 @@ public class PersonaController {
 
 	@Autowired
 	PersonaService personaService;
-	@Autowired
-	CasaService casaService;
-
 	@GetMapping("/")
+	@ApiOperation(value="Método que trae la lista de las personas registradas")
 	public ResponseEntity<List<Persona>> getLista() {
 		List<Persona> lista = personaService.obtenerTodos();
 		return new ResponseEntity<List<Persona>>(lista, HttpStatus.OK);
 	}
 
 	@GetMapping("/{documento}")
+	@ApiOperation(value="Método que trae una persona mediante su documento")
 	public ResponseEntity<Persona> getOne(@PathVariable String documento) {
 		if (!personaService.existsByDocumento(documento))
 			return new ResponseEntity(new Mensaje("No existe una persona con ese documento"), HttpStatus.NOT_FOUND);
@@ -39,6 +40,7 @@ public class PersonaController {
 	}
 
 	@PostMapping("/nuevo")
+	@ApiOperation(value="Método que permite registrar a una persona")
 	public ResponseEntity<?> create(@RequestBody Persona persona, Casa casa) {
 		if (StringUtils.isBlank(persona.getDocumento()))
 			return new ResponseEntity(new Mensaje("El documento es obligatorio"), HttpStatus.BAD_REQUEST);
@@ -51,6 +53,7 @@ public class PersonaController {
 	}
 
 	@PutMapping("/actualizar/{documento}")
+	@ApiOperation(value="Método que permite actualizar una persona mediante su documento")
 	public ResponseEntity<?> update(@RequestBody Persona persona, @PathVariable("documento") String documento) {
 		if (!personaService.existsByDocumento(documento))
 			return new ResponseEntity(new Mensaje("No existe esa persona"), HttpStatus.NOT_FOUND);
@@ -65,6 +68,7 @@ public class PersonaController {
 	}
 
 	@DeleteMapping("/borrar/{documento}")
+	@ApiOperation(value="Método que permite eliminar una persona mediante su documento")
 	public ResponseEntity<?> delete(@PathVariable String documento) {
 		if (!personaService.existsByDocumento(documento))
 			return new ResponseEntity(new Mensaje("No existe una persona con ese documento"), HttpStatus.NOT_FOUND);
